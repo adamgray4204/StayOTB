@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stay OTB - Mountain Biking Progress Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            min-height: 100vh;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c59 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .tagline {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background: #f8f9fa;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #495057;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover, nav a.active {
+            background: #007bff;
+            color: white;
+        }
+        
+        .page {
+            display: none;
+            padding: 2rem;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        h2 {
+            color: #2d5a27;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: #4a7c59;
+            margin: 1.5rem 0 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .app-description {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #4a7c59;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card h4 {
+            color: #2d5a27;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-form {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .not-included {
+            background: #fff3cd;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 1.5rem 0;
+        }
+        
+        footer {
+            background: #343a40;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .company-info {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .privacy-section {
+            background: #e8f5e8;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid #c3e6cb;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                margin: 0;
+            }
+            
+            header {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: center;
+            }
+            
+            .page {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Stay OTB</h1>
+            <p class="tagline">Mountain Biking Progress Tracker</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#home" class="nav-link active">Home & Support</a></li>
+                <li><a href="#privacy" class="nav-link">Privacy Policy</a></li>
+            </ul>
+        </nav>
+        
+        <div id="home" class="page active">
+            <div class="app-description">
+                <h2>About Stay OTB</h2>
+                <p>Stay OTB helps mountain bikers document their rides, track technical features, and see their progression over time. Whether you're tackling roots, drops, rock gardens, or jumps, Stay OTB gives you the tools to record how you rode it — and how you're improving.</p>
+            </div>
+            
+            <h3>Features</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🚵‍♂️ Ride Logging</h4>
+                    <p>Capture GPS and acceleration data to record your rides in detail.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🪨 Feature Tracking</h4>
+                    <p>Document specific technical features you encounter, from small root sections to big rock gardens.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📈 Progression History</h4>
+                    <p>Rate your attempts as Rode it, Failed it, or OTB'd it (Over the Bars), and watch your progression over time.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎯 Personal Growth</h4>
+                    <p>Set goals, unlock achievements, and see how your technical skills develop ride by ride.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>✏️ Rider Feedback</h4>
+                    <p>Override results manually and help improve detection accuracy.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📱 Offline Mode</h4>
+                    <p>Record rides without cellular service.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔒 Privacy First</h4>
+                    <p>Your rides are stored privately on your device unless you choose to share.</p>
+                </div>
+            </div>
+            
+            <div class="not-included">
+                <h3>What's Not Included</h3>
+                <ul>
+                    <li>No segments</li>
+                    <li>No leaderboards</li>
+                    <li>No competition — just personal progress tracking</li>
+                </ul>
+            </div>
+            
+            <p style="margin: 1.5rem 0; font-style: italic; text-align: center; font-size: 1.1rem;">
+                With Stay OTB, every ride becomes more than just distance and elevation — it's about conquering the technical challenges that make mountain biking fun.
+            </p>
+            
+            <div class="contact-form">
+                <h2>Contact Support</h2>
+                <p>Have questions or need help? We're here to assist you!</p>
+                
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Select a topic</option>
+                            <option value="bug">Bug Report</option>
+                            <option value="feature">Feature Request</option>
+                            <option value="help">Need Help</option>
+                            <option value="account">Account Issue</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Please describe your question or issue in detail..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Send Message</button>
+                    
+                    <div id="successMessage" class="success-message">
+                        Thank you for your message! We'll get back to you soon.
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div id="privacy" class="page">
+            <h2>Privacy Policy</h2>
+            
+            <div class="privacy-section">
+                <h3>Our Commitment to Privacy</h3>
+                <p><strong>We do not keep your data.</strong> Stay OTB is designed with privacy as a core principle.</p>
+            </div>
+            
+            <h3>Data Collection and Storage</h3>
+            <p>Stay OTB stores all your ride data, technical feature tracking, and progression history locally on your device. We do not collect, transmit, or store any of your personal riding data on our servers.</p>
+            
+            <h3>What We Don't Collect</h3>
+            <ul style="margin: 1rem 0 1rem 2rem;">
+                <li>GPS coordinates or location data</li>
+                <li>Ride statistics or performance data</li>
+                <li>Personal information beyond what you voluntarily provide</li>
+                <li>Device identifiers or usage analytics</li>
+            </ul>
+            
+            <h3>Optional Data Sharing</h3>
+            <p>The only time your data may be shared is when you explicitly choose to export or share specific rides using the app's built-in sharing features. This sharing is always initiated by you and under your complete control.</p>
+            
+            <h3>Contact Form</h3>
+            <p>When you submit the contact form on this support page, we only use your email address to respond to your inquiry. We do not add you to mailing lists or share your contact information with third parties.</p>
+            
+            <h3>App Store Data</h3>
+            <p>The app may collect standard iOS analytics through the App Store as permitted by your device settings. This data is managed by Apple according to their privacy policies.</p>
+            
+            <h3>Changes to This Policy</h3>
+            <p>We will update this privacy policy if our practices change. Any updates will be posted on this page.</p>
+            
+            <h3>Contact Us</h3>
+            <p>If you have questions about this privacy policy, please contact us using the support form on the main page.</p>
+            
+            <div class="privacy-section">
+                <p><em>Last updated: September 2025</em></p>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="company-info">
+                <p>&copy; 2025 Ocean Wave Consultants, LLC</p>
+                <p>Richmond, Virginia • Owned by Adam & Mayumi Gray</p>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page');
+            
+            // Handle navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    
+                    // Update active states
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    pages.forEach(p => p.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(targetId).classList.add('active');
+                    
+                    // Update URL for app store submission
+                    window.history.pushState({}, '', `#${targetId}`);
+                });
+            });
+            
+            // Handle initial page load from URL
+            const initialHash = window.location.hash;
+            if (initialHash && initialHash !== '#home') {
+                const targetPage = initialHash.substring(1);
+                if (document.getElementById(targetPage)) {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    pages.forEach(p => p.classList.remove('active'));
+                    
+                    document.querySelector(`[href="${initialHash}"]`).classList.add('active');
+                    document.getElementById(targetPage).classList.add('active');
+                }
+            }
+            
+            // Handle contact form submission
+            document.getElementById('contactForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const name = formData.get('name');
+                const email = formData.get('email');
+                const subject = formData.get('subject');
+                const message = formData.get('message');
+                
+                // Create mailto link
+                const mailtoLink = `mailto:adamgray42042@gmail.com?subject=Stay OTB Support: ${subject}&body=Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0AMessage:%0D%0A${encodeURIComponent(message)}`;
+                
+                // Open email client
+                window.location.href = mailtoLink;
+                
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Reset form
+                this.reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>
